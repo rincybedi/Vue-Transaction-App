@@ -1,0 +1,23 @@
+p {
+  text-align: center;
+}
+
+#app {
+  margin: 0px;
+  text-align: left;
+}
+
+.container {
+  position: relative;
+  height: 90%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-left: 2%;
+  margin-right: 10%;
+}
+
+.md-field {
+  max-width: 300px;
+}
