@@ -7,22 +7,7 @@ const getNewTranscationsId = function(transactions) {
 };
 export default new Vuex.Store({
   state: {
-    transactions: [
-      {
-        tsAmount: 30,
-        tsDetails: "Debited",
-        tsType: 1,
-        id: 1,
-        tsDate: "",
-      },
-      {
-        tsAmount: 20,
-        tsDetails: "Credited",
-        tsType: 2,
-        id: 2,
-        tsDate: "",
-      },
-    ],
+    transactions: [],
   },
   mutations: {
     addNewTs(state, payload) {
@@ -32,29 +17,35 @@ export default new Vuex.Store({
         tsDetails: payload.tsDetails,
         tsType: payload.tsType,
         tsDate: Date.now(),
+        isRevertedTs: payload.revertedTsId > 0 ? true : false,
       });
+
+      if (payload.revertedTsId > 0) {
+        Vue.set(
+          this.state.transactions.filter(
+            (t) => t.id == payload.revertedTsId
+          )[0],
+          "isRevertedTs",
+          true
+        );
+      }
     },
 
     deleteAllTs() {
       this.state.transactions = [];
     },
 
-    revertTransaction(payload) {
-      console.log(payload.id);
-      payload.tsDetails = "Transaction reverted for id" + payload.id;
-      if (payload.tsType == 1) {
-        payload.tsType = 2;
-      } else {
-        payload.tsType = 2;
-      }
-      this.mutations.addNewTs(payload);
+    revertTransaction(payload) { 
+      this.addNewTs(payload);
     },
   },
+
   getters: {
     getTransactions: function(state) {
       return state.transactions;
     },
   },
+
   actions: {
     saveNewTs(context, payload) {
       context.commit("addNewTs", payload);

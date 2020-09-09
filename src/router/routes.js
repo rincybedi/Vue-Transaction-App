@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import ViewTransactions from "../components/ViewTransactions";
 import ResetTransactions from "../components/ResetTransactions";
+import PageNotFound from "../common/PageNotFound";
 
 Vue.use(VueRouter);
 
@@ -12,7 +13,7 @@ const routes = [
     component: ViewTransactions,
   },
   {
-    path: "/View",    
+    path: "/View",
     name: "View",
     component: ViewTransactions,
   },
@@ -25,6 +26,11 @@ const routes = [
     path: "/New",
     name: "New",
     component: () => import("../components/NewTransaction"),
+  },
+  {
+    path: "*",
+    name: "PageNotFound",
+    component: PageNotFound,
   },
 ];
 

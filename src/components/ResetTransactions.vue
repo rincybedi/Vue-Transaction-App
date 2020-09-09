@@ -29,7 +29,6 @@ export default {
     };
   },
   methods: {
-    showResetConfirmDialog: function() {},
     onModalCloseCallback: function(clickedYes) {
       this.showModal = false;
       if (clickedYes) {

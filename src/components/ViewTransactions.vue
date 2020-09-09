@@ -9,7 +9,7 @@
     >
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
-          <h1 class="md-title">Transactions Details</h1>
+          <h1 class="md-title">Transaction List</h1>
         </div>
 
         <md-field md-clearable class="md-toolbar-section-end">
@@ -24,11 +24,11 @@
       <md-table-empty-state md-label="No record found"> </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Date" md-sort-by="id" md-numeric>{{
-          item.tsDate | getTransactionDate(item.tsDate)
-        }}</md-table-cell>
-        <md-table-cell md-label="Id" md-sort-by="id" md-numeric>{{
+        <md-table-cell md-label="Transaction ID" md-sort-by="id" md-numeric>{{
           item.id
+        }}</md-table-cell>
+        <md-table-cell md-label="Transaction Date" md-sort-by="id" md-numeric>{{
+          item.tsDate | getTransactionDate(item.tsDate)
         }}</md-table-cell>
         <md-table-cell md-label="Transaction Details" md-sort-by="tsDetails">{{
           item.tsDetails
@@ -39,7 +39,7 @@
         <md-table-cell md-label="Transaction Type" md-sort-by="tsType">{{
           item.tsType | getTransactionType(item.tsType)
         }}</md-table-cell>
-        <md-table-cell md-label="Actions">
+        <md-table-cell md-label="Actions" v-if="!item.isRevertedTs">
           <md-button class="md-accent" @click="revertTs(item.id)">
             Revert</md-button
           >
@@ -47,9 +47,8 @@
       </md-table-row>
     </md-table>
 
-    <span
-      >Closing Balance : <span>{{ closingBalance }}</span></span
-    >
+    <md-subheader>Closing Balance : {{ closingBalance }} </md-subheader>
+
     <ConfirmDialog
       v-bind:showModal="showModal"
       v-bind:content="modalContent"
@@ -69,12 +68,13 @@ const toLower = (text) => {
 };
 
 const searchByName = (items, term) => {
-  if (term) {
+  if (term != null) {
     return items.filter((item) =>
       toLower(item.tsDetails).includes(toLower(term))
     );
   }
 };
+
 export default {
   name: "TransactionList",
   components: {
@@ -116,6 +116,7 @@ export default {
           tsType: currentTs.tsType == 1 ? 2 : 1,
           tsDetails: "Transaction reverted for ID :  " + currentTs.id,
           tsAmount: currentTs.tsAmount,
+          revertedTsId: this.cancelTsId,
         });
         this.getClosingBalanace();
         // this.$store.commit("revertTransaction", currentTs[0]);
@@ -146,3 +147,30 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.md-table-cell:last-child .md-table-cell-container,
+.md-table-head:last-child {
+  text-align: center !important;
+  display: flex;
+  justify-content: center;
+}
+
+.md-table-cell {
+  text-align: left;
+}
+.md-table-cell.md-numeric {
+  text-align: left;
+}
+.md-title {
+  text-align: left;
+}
+.md-subheader {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.reverted-ts {
+  font-style: italic;
+}
+</style>
