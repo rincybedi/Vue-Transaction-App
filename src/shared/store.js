@@ -10,7 +10,7 @@ export default new Vuex.Store({
     transactions: [],
   },
   mutations: {
-    addNewTs(state, payload) {
+    addNewTs(context, payload) {
       this.state.transactions.push({
         id: getNewTranscationsId(this.state.transactions),
         tsAmount: payload.tsAmount,

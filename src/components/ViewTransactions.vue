@@ -127,7 +127,7 @@ export default {
       this.showModal = !this.showModal;
       this.cancelTsId = id;
     },
-  },
+  },                      
   created() {
     this.searched = this.transactions;
     this.getClosingBalanace();
